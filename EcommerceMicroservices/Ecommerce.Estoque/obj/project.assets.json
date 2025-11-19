@@ -487,11 +487,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\Ecommerce.Estoque\\Ecommerce.Estoque.csproj",
+      "projectUniqueName": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\EcommerceMicroservices\\Ecommerce.Estoque\\Ecommerce.Estoque.csproj",
       "projectName": "Ecommerce.Estoque",
-      "projectPath": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\Ecommerce.Estoque\\Ecommerce.Estoque.csproj",
+      "projectPath": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\EcommerceMicroservices\\Ecommerce.Estoque\\Ecommerce.Estoque.csproj",
       "packagesPath": "C:\\Users\\Rodrigo Santana\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\Ecommerce.Estoque\\obj\\",
+      "outputPath": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\EcommerceMicroservices\\Ecommerce.Estoque\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Rodrigo Santana\\AppData\\Roaming\\NuGet\\NuGet.Config"

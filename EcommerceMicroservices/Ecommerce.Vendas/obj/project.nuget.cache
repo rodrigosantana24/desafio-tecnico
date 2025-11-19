@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vAPfQIEazzY=",
+  "dgSpecHash": "OLUTbElJVN4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\Ecommerce.Vendas\\Ecommerce.Vendas.csproj",
+  "projectFilePath": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\EcommerceMicroservices\\Ecommerce.Vendas\\Ecommerce.Vendas.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Rodrigo Santana\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.21\\microsoft.aspnetcore.openapi.8.0.21.nupkg.sha512",
     "C:\\Users\\Rodrigo Santana\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

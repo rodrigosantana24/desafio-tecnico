@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\Ecommerce.Vendas\\Ecommerce.Vendas.csproj": {}
+    "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\EcommerceMicroservices\\Ecommerce.Vendas\\Ecommerce.Vendas.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\Ecommerce.Vendas\\Ecommerce.Vendas.csproj": {
+    "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\EcommerceMicroservices\\Ecommerce.Vendas\\Ecommerce.Vendas.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\Ecommerce.Vendas\\Ecommerce.Vendas.csproj",
+        "projectUniqueName": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\EcommerceMicroservices\\Ecommerce.Vendas\\Ecommerce.Vendas.csproj",
         "projectName": "Ecommerce.Vendas",
-        "projectPath": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\Ecommerce.Vendas\\Ecommerce.Vendas.csproj",
+        "projectPath": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\EcommerceMicroservices\\Ecommerce.Vendas\\Ecommerce.Vendas.csproj",
         "packagesPath": "C:\\Users\\Rodrigo Santana\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\Ecommerce.Vendas\\obj\\",
+        "outputPath": "C:\\Users\\Rodrigo Santana\\Documents\\desenvolvimento\\github\\desafio-tecnico\\EcommerceMicroservices\\Ecommerce.Vendas\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Rodrigo Santana\\AppData\\Roaming\\NuGet\\NuGet.Config"
