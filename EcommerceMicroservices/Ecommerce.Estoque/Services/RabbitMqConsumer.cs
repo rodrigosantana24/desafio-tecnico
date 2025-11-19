@@ -2,12 +2,6 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using Newtonsoft.Json;
-using Microsoft.Extensions.Hosting;
-using System.Threading;
-using System.Threading.Tasks;
-using System;
-
-public class OrderCreatedEvent { public int ProductId { get; set; } public int Quantity { get; set; } }
 
 public class RabbitMqConsumer : BackgroundService
 {
@@ -18,7 +12,7 @@ public class RabbitMqConsumer : BackgroundService
     public RabbitMqConsumer(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        var factory = new ConnectionFactory() { HostName = "localhost" };
+        var factory = new ConnectionFactory() { HostName = "localhost" }; 
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
         _channel.QueueDeclare(queue: "order-created-queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
@@ -32,8 +26,10 @@ public class RabbitMqConsumer : BackgroundService
             var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
             var orderEvent = JsonConvert.DeserializeObject<OrderCreatedEvent>(message);
+
             await AtualizarEstoque(orderEvent);
         };
+
         _channel.BasicConsume(queue: "order-created-queue", autoAck: true, consumer: consumer);
         return Task.CompletedTask;
     }
@@ -42,8 +38,14 @@ public class RabbitMqConsumer : BackgroundService
     {
         using (var scope = _serviceProvider.CreateScope())
         {
-            Console.WriteLine($"[Estoque] Baixa de {orderEvent.Quantity} itens no Produto ID {orderEvent.ProductId}");
-            await Task.CompletedTask; 
+            var context = scope.ServiceProvider.GetRequiredService<EstoqueContext>();
+            var produto = await context.Produtos.FindAsync(orderEvent.ProductId);
+            if (produto != null)
+            {
+                produto.Estoque -= orderEvent.Quantity;
+                await context.SaveChangesAsync();
+                Console.WriteLine($"[Estoque] Produto {produto.Nome} atualizado. Novo estoque: {produto.Estoque}");
+            }
         }
     }
 }
