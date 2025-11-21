@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,7 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<RabbitMqService>();
 builder.Services.AddHttpClient(); 
-builder.Services.AddDbContext<VendasContext>(opt => opt.UseInMemoryDatabase("VendasDb"));
+builder.Services.AddDbContext<VendasContext>(opt => opt.UseSqlite("Data Source=vendas.db"));
 
 var app = builder.Build();
 
