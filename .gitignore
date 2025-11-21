@@ -1,0 +1,60 @@
+# Build results
+bin/
+obj/
+out/
+
+# VS Code
+.vscode/
+
+# Visual Studio
+*.user
+*.suo
+*.userprefs
+*.csproj.user
+
+# .NET
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Logs
+*.log
+
+# NuGet
+*.nupkg
+packages/
+*.snupkg
+.nuget/
+
+# Runtime
+*.dll
+*.exe
+*.mdb
+*.pdb
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Rider
+.idea/
+
+# Azure functions
+local.settings.json
+
+# Publish output
+publish/
+wwwroot/
+
+# Temp
+*.tmp
+*.temp
+*.cache
+
+# OS specific
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+ 
