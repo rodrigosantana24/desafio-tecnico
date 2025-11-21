@@ -1,18 +1,22 @@
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using Newtonsoft.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 public class RabbitMqConsumer : BackgroundService
 {
     private readonly IServiceProvider _serviceProvider;
-    private IConnection _connection;
-    private IModel _channel;
+    private RabbitMQ.Client.IConnection _connection;
+    private RabbitMQ.Client.IModel _channel;
 
     public RabbitMqConsumer(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        var factory = new ConnectionFactory() { HostName = "localhost" }; 
+        var factory = new RabbitMQ.Client.ConnectionFactory() { HostName = "localhost" };
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
         _channel.QueueDeclare(queue: "order-created-queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
@@ -27,7 +31,10 @@ public class RabbitMqConsumer : BackgroundService
             var message = Encoding.UTF8.GetString(body);
             var orderEvent = JsonConvert.DeserializeObject<OrderCreatedEvent>(message);
 
-            await AtualizarEstoque(orderEvent);
+            if (orderEvent != null)
+            {
+                await AtualizarEstoque(orderEvent);
+            }
         };
 
         _channel.BasicConsume(queue: "order-created-queue", autoAck: true, consumer: consumer);
@@ -43,6 +50,7 @@ public class RabbitMqConsumer : BackgroundService
             if (produto != null)
             {
                 produto.Estoque -= orderEvent.Quantity;
+                if (produto.Estoque < 0) produto.Estoque = 0;
                 await context.SaveChangesAsync();
                 Console.WriteLine($"[Estoque] Produto {produto.Nome} atualizado. Novo estoque: {produto.Estoque}");
             }
