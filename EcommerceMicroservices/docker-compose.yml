@@ -19,3 +19,40 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
+  estoque:
+    build:
+      context: ./Ecommerce.Estoque
+      dockerfile: Dockerfile
+    container_name: estoque
+    depends_on:
+      - rabbitmq
+    environment:
+      - ASPNETCORE_URLS=http://+:5001
+    ports:
+      - "5001:5001"
+
+  vendas:
+    build:
+      context: ./Ecommerce.Vendas
+      dockerfile: Dockerfile
+    container_name: vendas
+    depends_on:
+      - rabbitmq
+      - estoque
+    environment:
+      - ASPNETCORE_URLS=http://+:5002
+    ports:
+      - "5002:5002"
+
+  gateway:
+    build:
+      context: ./Ecommerce.Gateway
+      dockerfile: Dockerfile
+    container_name: gateway
+    depends_on:
+      - estoque
+      - vendas
+    environment:
+      - ASPNETCORE_URLS=http://+:5000
+    ports:
+      - "5000:5000"
