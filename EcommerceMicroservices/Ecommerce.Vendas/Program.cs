@@ -4,6 +4,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<RabbitMqService>();
+builder.Services.AddHttpClient(); 
+builder.Services.AddDbContext<VendasContext>(opt => opt.UseInMemoryDatabase("VendasDb"));
 
 var app = builder.Build();
 
