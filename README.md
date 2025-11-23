@@ -1,81 +1,170 @@
 
-# Ecommerce Microservices - Desafio Técnico
+---
 
-**Visão Geral:**
-- **Projeto**: Conjunto de microserviços .NET (Gateway, Vendas, Estoque) com integração via RabbitMQ e orquestração via `docker-compose`.
-- **Objetivo**: API Gateway para roteamento (Ocelot), serviços de Vendas e Estoque, e comunicação assíncrona com RabbitMQ.
+# 🛒 Ecommerce Microservices - Desafio Técnico
 
-**Estrutura do Repositório**
-- `EcommerceMicroservices.sln`: Solução .NET com os projetos.
-- `docker-compose.yml`: Orquestração das imagens/containeres para rodar localmente.
-- `requests.http`: Coleção de requisições HTTP (útil para testes rápidos usando VS Code REST Client ou HTTP client similar).
-- `Ecommerce.Gateway/`: Projeto do API Gateway (contém `ocelot.json`, `Program.cs`, `Dockerfile`).
-- `Ecommerce.Vendas/`: Serviço de Vendas (endpoints para criar/listar pedidos, `RabbitMqService.cs`).
-- `Ecommerce.Estoque/`: Serviço de Estoque (endpoints para produtos, `RabbitMqConsumer.cs`).
-- `Images/`: Pasta para colocar imagens que ilustrem os resultados das requisições (atualmente vazia). Coloque capturas de tela aqui para incluí-las no README.
+Um ecossistema de microserviços em .NET 8, com API Gateway, comunicação assíncrona via RabbitMQ, e Docker Compose.
 
-**Como o projeto está organizado (resumo)**
-- **Gateway (Ecommerce.Gateway)**: Roteia requisições para os microsserviços usando Ocelot. Verifique `ocelot.json` e `Program.cs` para as rotas configuradas.
-- **Vendas (Ecommerce.Vendas)**: Gerenciamento de pedidos — contém controller(s) em `Controllers/OrdersController.cs` e persistência em `Data/VendasContext.cs`.
-- **Estoque (Ecommerce.Estoque)**: Gerenciamento de produtos — veja `Controllers/ProductsController.cs` e `Data/EstoqueContext.cs`.
-- **Comunicação assíncrona**: Implementada via RabbitMQ — componentes em `Services/RabbitMqService.cs` e `Services/RabbitMqConsumer.cs`.
+---
 
-**Como rodar (local)**
-1. Pré-requisitos: `docker` + `docker-compose` (ou .NET 8 SDK para rodar localmente sem containers).
-2. Rodando com Docker Compose (recomendado):
+## 📌 Visão Geral
 
-```powershell
-cd path\to\repo  # ex: cd C:\Users\...\desafio-tecnico
+Este projeto simula a arquitetura de um pequeno ecommerce, dividido em três serviços independentes:
+
+* **Gateway** - ponto de entrada do sistema, responsável pelo roteamento.
+
+* **Vendas** - criação e listagem de pedidos.
+
+* **Estoque** - gerenciamento de produtos.
+
+A comunicação assíncrona é feita via RabbitMQ, permitindo troca de eventos entre os serviços.
+
+---
+
+## Estrutura do Repositório
+
+```
+/Ecommerce.Gateway       → API Gateway (Ocelot)
+/Ecommerce.Vendas        → Microserviço de Vendas
+/Ecommerce.Estoque       → Microserviço de Estoque
+```
+
+
+---
+
+## 🎯Resultados das Requisições
+
+
+```md
+![Lista de Produtos](/Images/requisicao.png)
+```
+
+---
+
+## ⚙️ Detalhes dos Serviços
+
+### **📦 Estoque — `Ecommerce.Estoque`**
+
+Gerencia produtos e disponibiliza endpoints de CRUD.
+Arquivos principais:
+
+* `Controllers/ProductsController.cs`
+* `Data/EstoqueContext.cs`
+
+---
+
+### **🧾 Vendas — `Ecommerce.Vendas`**
+
+Criação e listagem de pedidos.
+Principais arquivos:
+
+* `Controllers/OrdersController.cs`
+* `Data/VendasContext.cs`
+
+---
+
+### **🚪 Gateway — `Ecommerce.Gateway`**
+
+Roteamento usando **Ocelot**.
+Configurações importantes:
+
+* `ocelot.json`
+* `Program.cs`
+
+---
+
+### **📨 Comunicação Assíncrona (RabbitMQ)**
+
+* Produtor e consumidor de eventos entre Vendas e Estoque.
+* Implementação:
+
+  * `Services/RabbitMqService.cs`
+  * `Services/RabbitMqConsumer.cs`
+
+---
+
+## ▶️ Como Rodar o Projeto
+
+### **1. Pré-requisitos**
+
+* Docker + Docker Compose
+  *(ou .NET 8 SDK caso queira rodar sem containers)*
+
+---
+
+### **2. Rodando com Docker Compose (recomendado)**
+
+```bash
+cd path/to/repo
 docker-compose up --build
 ```
 
-3. Rodando individualmente (sem Docker):
+---
 
-```powershell
+### **3. Rodando manualmente (sem Docker)**
+
+```bash
+# Gateway
 cd Ecommerce.Gateway
 dotnet run
-# em outro terminal
+
+# Vendas
 cd ../Ecommerce.Vendas
 dotnet run
+
+# Estoque
 cd ../Ecommerce.Estoque
 dotnet run
 ```
 
-4. Testes rápidos: use os arquivos `*.http` incluídos (`requests.http`, `Ecommerce.*.http`) ou uma ferramenta como Postman / REST Client no VS Code.
+---
 
-**Endpoints importantes**
-- Para rotas e verbos exatos confira os controllers:
-	- `Ecommerce.Estoque/Controllers/ProductsController.cs`
-	- `Ecommerce.Vendas/Controllers/OrdersController.cs`
-- O Gateway aplica roteamento definido em `Ecommerce.Gateway/ocelot.json` — é o ponto de entrada se estiver usando o gateway.
+### **4. Testes rápidos**
 
-**Resultados das requisições (Imagens)**
-- A pasta `Images/` está atualmente vazia. Para adicionar imagens que mostrem os resultados das requisições (ex.: respostas JSON, logs ou telas do Postman), coloque os arquivos dentro de `Images/`.
-- Exemplo de inclusão de imagem no README (Markdown):
+Use:
 
-```md
-![Requisição - Lista de Produtos](Images/request-products.png)
-```
+* Arquivos `.http` incluídos no repositório
+* Ou ferramentas como **Postman / Insomnia / VS Code REST Client**
 
-- Recomendo gerar imagens para estas requisições-chave e salvá-las com nomes descritivos como `request-products.png`, `request-create-order.png`, `rabbitmq-event.png`.
+---
 
-**O que eu fiz / Notas do autor**
-- Criei uma solução com três componentes principais: API Gateway (Ocelot), serviço de Vendas e serviço de Estoque.
-- Adicionei integração com RabbitMQ para comunicação assíncrona entre serviços (produtor/consumidor).
-- Adicionei `Dockerfile` em cada serviço e um `docker-compose.yml` para facilitar o deploy local.
-- Incluí arquivos `*.http` para facilitar testes manuais das APIs.
+## 🔗 Endpoints Principais
 
-Se quiser, posso:
-- Adicionar imagens reais de exemplos de requisições na pasta `Images/` (envie as capturas ou permita que eu gere exemplos).
-- Gerar um arquivo de Postman/Insomnia com as coleções de requisições a partir dos `*.http`.
-- Documentar cada endpoint com exemplos de request/response diretamente no README.
+Conferir detalhes diretamente nos controllers:
 
-**Como contribuir / próximos passos**
-- Rodar o projeto localmente e testar os endpoints.
-- Implementar testes automatizados (unit/integration).
-- Documentar exemplos de payloads e códigos de resposta para cada endpoint.
+* **Produtos (Estoque)**
+  `Ecommerce.Estoque/Controllers/ProductsController.cs`
 
-**Contato / Autor**
-- Repositório: `desafio-tecnico`
-- Se quiser que eu adicione as imagens de resultado diretamente ao README, envie as imagens para a pasta `Images/` ou me permita gerar capturas com exemplos.
+* **Pedidos (Vendas)**
+  `Ecommerce.Vendas/Controllers/OrdersController.cs`
 
+O **Gateway** roteia tudo via `ocelot.json`.
+
+
+## 🧩 O que foi implementado
+
+* Arquitetura de microserviços em .NET 8
+* API Gateway usando Ocelot
+* Comunicação assíncrona com RabbitMQ (producer/consumer)
+* Dockerfile para cada serviço + docker-compose
+* Arquivos `.http` para testes manuais
+
+---
+
+## 🚀 Próximos Passos / Contribuição
+
+* Criar testes unitários e de integração
+* Adicionar exemplos de request/response no README
+* Inserir screenshots reais na pasta `Images/`
+* Criar coleção Postman / Insomnia
+
+---
+
+## 👤 Autor
+
+Repositório: **desafio-tecnico**
+Se quiser, posso gerar imagens de exemplo ou criar um arquivo de coleção do Postman — só pedir!
+
+---
+
+Se quiser ajustar o tom (mais técnico, mais informal, mais corporativo), só me dizer!
