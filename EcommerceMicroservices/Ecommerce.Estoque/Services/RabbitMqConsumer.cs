@@ -16,14 +16,42 @@ public class RabbitMqConsumer : BackgroundService
     public RabbitMqConsumer(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        var factory = new RabbitMQ.Client.ConnectionFactory() { HostName = "localhost" };
-        _connection = factory.CreateConnection();
-        _channel = _connection.CreateModel();
-        _channel.QueueDeclare(queue: "order-created-queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+        // connection will be created in ExecuteAsync with retries so app doesn't crash
     }
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    private ConnectionFactory CreateFactory()
     {
+        var host = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "rabbitmq";
+        return new RabbitMQ.Client.ConnectionFactory() { HostName = host };
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        var factory = CreateFactory();
+
+        // Retry until RabbitMQ is available or cancellation requested
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                _connection = factory.CreateConnection();
+                _channel = _connection.CreateModel();
+                _channel.QueueDeclare(queue: "order-created-queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+                break;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[RabbitMqConsumer] RabbitMQ not ready: {ex.Message}. Retrying in 2s...");
+                try { await Task.Delay(2000, stoppingToken); } catch { break; }
+            }
+        }
+
+        if (_channel == null)
+        {
+            Console.WriteLine("[RabbitMqConsumer] Could not establish RabbitMQ channel, exiting consumer.");
+            return;
+        }
+
         var consumer = new EventingBasicConsumer(_channel);
         consumer.Received += async (model, ea) =>
         {
@@ -38,7 +66,9 @@ public class RabbitMqConsumer : BackgroundService
         };
 
         _channel.BasicConsume(queue: "order-created-queue", autoAck: true, consumer: consumer);
-        return Task.CompletedTask;
+
+        // keep running until stopped
+        await Task.Delay(-1, stoppingToken).ContinueWith(_ => { });
     }
 
     private async Task AtualizarEstoque(OrderCreatedEvent orderEvent)
