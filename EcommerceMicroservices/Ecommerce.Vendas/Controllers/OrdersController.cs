@@ -33,7 +33,8 @@ public class OrdersController : ControllerBase
     {
         // validate stock via Estoque service
         var client = _httpFactory.CreateClient();
-        var resp = await client.GetAsync("http://host.docker.internal:5001/api/products/" + order.ProductId);
+        // Use Docker service hostname to call Inventory when running in containers
+        var resp = await client.GetAsync("http://estoque:5001/api/products/" + order.ProductId);
         if (!resp.IsSuccessStatusCode) return BadRequest("Product not found");
         var json = await resp.Content.ReadAsStringAsync();
         var prod = JsonSerializer.Deserialize<ProdutoDto>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });

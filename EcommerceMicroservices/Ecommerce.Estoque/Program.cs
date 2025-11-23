@@ -19,7 +19,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// In containerized environments we prefer HTTP bindings; avoid forcing HTTPS redirection
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
+// Ensure database is created on startup to avoid runtime errors
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<EstoqueContext>();
+    db.Database.EnsureCreated();
+}
 
 app.MapControllers();
 

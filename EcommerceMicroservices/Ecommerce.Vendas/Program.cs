@@ -9,6 +9,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<RabbitMqService>();
 builder.Services.AddHttpClient(); 
 builder.Services.AddDbContext<VendasContext>(opt => opt.UseSqlite("Data Source=vendas.db"));
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -19,7 +20,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Avoid forcing HTTPS redirect in containers
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
+// Ensure database is created on startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<VendasContext>();
+    db.Database.EnsureCreated();
+}
 
 var summaries = new[]
 {
@@ -40,6 +52,8 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+app.MapControllers();
 
 app.Run();
 

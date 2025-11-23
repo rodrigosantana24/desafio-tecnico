@@ -8,6 +8,7 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+
   estoque:
     build:
       context: ./Ecommerce.Estoque
@@ -19,8 +20,6 @@ services:
       - ASPNETCORE_URLS=http://+:5001
     ports:
       - "5001:5001"
-    volumes:
-      - ./Ecommerce.Estoque/estoque.db:/app/estoque.db
 
   vendas:
     build:
@@ -34,8 +33,7 @@ services:
       - ASPNETCORE_URLS=http://+:5002
     ports:
       - "5002:5002"
-    volumes:
-      - ./Ecommerce.Vendas/vendas.db:/app/vendas.db
+    # REMOVIDO O VOLUME AQUI PARA EVITAR ERRO DE I/O NO WINDOWS
 
   gateway:
     build:
@@ -49,3 +47,4 @@ services:
       - ASPNETCORE_URLS=http://+:5000
     ports:
       - "5000:5000"
+

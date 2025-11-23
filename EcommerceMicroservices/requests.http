@@ -1,0 +1,55 @@
+@baseUrl = http://localhost:5000
+@contentType = application/json
+
+### -------------------------------------------------------
+### PASSO 1: Criar Produto (Popular Estoque)
+### Microserviço: Estoque (Via Gateway)
+### -------------------------------------------------------
+POST {{baseUrl}}/estoque/api/products
+Content-Type: {{contentType}}
+
+{
+    "nome": "Notebook Gamer",
+    "descricao": "i7 16GB RAM RTX 3060",
+    "preco": 5500.00,
+    "estoque": 10
+}
+
+### -------------------------------------------------------
+### PASSO 2: Consultar Produto (Verificar Saldo Inicial)
+### Microserviço: Estoque (Via Gateway)
+### ID esperado: 1
+### -------------------------------------------------------
+GET {{baseUrl}}/estoque/api/products/1
+
+### -------------------------------------------------------
+### PASSO 3: Realizar Venda (Compra Válida)
+### Microserviço: Vendas (Via Gateway)
+### Ação: Compra 2 unidades. Estoque deve ir para 8.
+### -------------------------------------------------------
+POST {{baseUrl}}/vendas/api/orders
+Content-Type: {{contentType}}
+
+{
+    "productId": 1,
+    "quantity": 2
+}
+
+### -------------------------------------------------------
+### PASSO 4: Consultar Produto Novamente (Validar RabbitMQ)
+### Microserviço: Estoque
+### Esperado: Estoque agora deve ser 8
+### -------------------------------------------------------
+GET {{baseUrl}}/estoque/api/products/1
+
+### -------------------------------------------------------
+### PASSO 5: Teste de Falha (Estoque Insuficiente)
+### Ação: Tentar comprar 50 unidades (Temos apenas 8)
+### -------------------------------------------------------
+POST {{baseUrl}}/vendas/api/orders
+Content-Type: {{contentType}}
+
+{
+    "productId": 1,
+    "quantity": 50
+}
