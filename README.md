@@ -12,9 +12,7 @@ Um ecossistema de microserviços em .NET 8, com API Gateway, comunicação assí
 Este projeto simula a arquitetura de um pequeno ecommerce, dividido em três serviços independentes:
 
 * **Gateway** - ponto de entrada do sistema, responsável pelo roteamento.
-
 * **Vendas** - criação e listagem de pedidos.
-
 * **Estoque** - gerenciamento de produtos.
 
 A comunicação assíncrona é feita via RabbitMQ, permitindo troca de eventos entre os serviços.
@@ -34,14 +32,12 @@ A comunicação assíncrona é feita via RabbitMQ, permitindo troca de eventos e
 
 ## 🎯Resultados das Requisições
 
-
-```md
 ![Lista de Produtos](/Images/requisicao.png)
-```
+
 
 ---
 
-## ⚙️ Detalhes dos Serviços
+## ⚙️ Detalhes da API
 
 ### **📦 Estoque — `Ecommerce.Estoque`**
 
@@ -83,7 +79,7 @@ Configurações importantes:
 
 ---
 
-## ▶️ Como Rodar o Projeto
+## Como Rodar o Projeto
 
 ### **1. Pré-requisitos**
 
@@ -117,54 +113,11 @@ cd ../Ecommerce.Estoque
 dotnet run
 ```
 
----
-
-### **4. Testes rápidos**
-
-Use:
-
-* Arquivos `.http` incluídos no repositório
-* Ou ferramentas como **Postman / Insomnia / VS Code REST Client**
-
----
-
-## 🔗 Endpoints Principais
-
-Conferir detalhes diretamente nos controllers:
-
-* **Produtos (Estoque)**
-  `Ecommerce.Estoque/Controllers/ProductsController.cs`
-
-* **Pedidos (Vendas)**
-  `Ecommerce.Vendas/Controllers/OrdersController.cs`
-
-O **Gateway** roteia tudo via `ocelot.json`.
-
-
-## 🧩 O que foi implementado
-
-* Arquitetura de microserviços em .NET 8
-* API Gateway usando Ocelot
-* Comunicação assíncrona com RabbitMQ (producer/consumer)
-* Dockerfile para cada serviço + docker-compose
-* Arquivos `.http` para testes manuais
-
----
-
-## 🚀 Próximos Passos / Contribuição
-
-* Criar testes unitários e de integração
-* Adicionar exemplos de request/response no README
-* Inserir screenshots reais na pasta `Images/`
-* Criar coleção Postman / Insomnia
-
----
-
 ## 👤 Autor
 
-Repositório: **desafio-tecnico**
-Se quiser, posso gerar imagens de exemplo ou criar um arquivo de coleção do Postman — só pedir!
+**Rodrigo Santana**
+
+[LinkedIn](https://www.linkedin.com/in/rodrigo-santana-280928233/)
 
 ---
 
-Se quiser ajustar o tom (mais técnico, mais informal, mais corporativo), só me dizer!
